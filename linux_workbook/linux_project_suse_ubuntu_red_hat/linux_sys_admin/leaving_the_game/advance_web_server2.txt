@@ -1,0 +1,441 @@
+
+
+
+virtual host
+-------------------
+
+
+in apache web server you can run multiple web site with a single computer.its a powerful feature and can be very effective .and very flexible.virtual hosts can do a high lavel customization .
+
+virtual host can run all the options used in the httpd.conf file.you can consider each virtual hosts as a separate configuration file.we can consider each virtual configaretion as a separate configaretion file.its like a nested configuration file in one httpd.conf file
+
+
+
+lets see a just one simple virtual hosts configaretion inside a httpd.conf
+
+
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/html/first_site
+	ServerName www.first.com
+</VirtualHost>
+
+this is the simpliest level of configuration
+
+lets create two virtual hosts
+----------------------------------------
+
+
+1)first we have to create a directory structure that hold our website data
+by default the Document root in our main apache server is "/var/www"
+
+
+2)we create two directory if we want to create two websites in the server
+for example first_site and second_site
+for the first website and the second website 
+
+3) and we have to make the public directory inside the two directory
+just like we do in the normal setup.remember virtual host always have to consider as  a separate entity.
+
+we will serve two websites
+
+first_site.com
+second_site.com
+
+with out vps server
+
+3)make the directory
+
+	=>sudo mkdir -p /var/www/first_site.com/public
+	=>sudo mkdir -p /var/www/second_site.com/public
+
+4)give the permission chmod 755:
+to the root directory /var/www
+
+    why 755:
+    -------------
+    =>it means user can read write and execute
+    =>group can only read and execute
+    =>others can only read and execute
+
+
+
+ 4)inside the main httpd.conf file we can add the tag shows avobe bellow but there is more efficient way.
+
+ the Debian comunity first implement this thing which is very efficient way to add virtual host
+
+ 5) we create two directory inside the "/etc/httpd" directory
+
+ 1=>sites-avilabe
+ 2=>sites-enabled
+
+ site avilable contains the virtual-hosts file 
+ site enable directory will contains the symbolic link of the two file
+
+ so when we need to disable any website we just remove the link from the main httpd.conf
+ file
+and when we try try to activate it we simply add the link to the file
+
+
+	=>sudo mkdir /etc/httpd/sites-available
+	=>sudo mkdir /etc/httpd/sites-enabled
+
+
+the file between the sites-avilabe directory is
+
+=>cat first_site.conf
+
+
+<VirtualHost *.80>
+	ServerName first_site.com
+	DocumentRoot /var/www/first_site.com/public
+	ErrorLog /var/www/first_site.com/error.log
+	ServerAlias www.first_site.com
+	<directory /var/www/first_site.com>
+		Options FollowSymlinks      ## this tells you to import all the modules of apache
+		AllowOverRide All
+		Order allow,deny   					#its the Acl if you write deny as a   
+		allow from all                      #second parameneter then it by default
+											#allow and we need to specfy what to
+											#deny
+
+	</directory>								
+
+</VirtualHost>
+
+=>cat second_site.conf
+
+<VirtualHost *:81>
+                ServerName second_site.com
+                DocumentRoot /var/www/second_site.com/public
+                ErrorLog /var/www/second_site.com/error.log
+                ServerAlias www.second_site.com
+
+       <directory /var/www/second_site.com>
+		Options FollowSymlinks        ## this tells you to import all the modules of apache
+		AllowOverRide All
+		Order allow,deny   					#its the Acl if you write deny as a   
+		allow from all                      #second parameneter then it by default
+											#allow and we need to specfy what to
+											#deny
+
+	</directory>	
+</VirtualHost>
+
+6)sites-enabled has the same copy of file in the sites-avilable directory
+
+
+
+=>sudo ln -s /etc/httpd/sites-available/first_site.conf /etc/httpd/sites-enabled/first_site.conf
+
+=>sudo ln -s /etc/httpd/sites-available/second_site.conf /etc/httpd/sites-enabled/second_site.conf
+
+
+
+
+
+7)now we add the sites-avilabe now we need to add the link of the file in or main httpd.conf file.and since the second site is ran in the port 81 we need to add the line
+"listen 81" in the httpd.comf file
+
+=>vim /etc/httpd/conf/httpd.conf
+
+add the line 
+--------------
+=>listen 81
+=>includeOptional sites-enabled/*.conf
+
+
+
+
+
+
+
+
+8) now restart the server
+
+=>sudo apachectl restart
+=>service httpd restart
+
+go to
+
+=>127.0.0.1:80
+=>127.0.0.1:81
+
+
+you can add domain name in the /etc/hosts file
+
+
+
+
+
+
+
+there is some thing more 
+
+
+<VirtualHost *:80>
+		ServerName first_site.com
+		DocumentRoot /var/www/first_site.com/public
+		ErrorLog /var/www/first_site.com/error.log
+</VirtualHost>
+
+=>in the position of * that we are using we can add the ip address
+
+for example
+<VirtualHost 192.168.2.100:80>
+		ServerName first_site.com
+		DocumentRoot /var/www/first_site.com/public
+		ErrorLog /var/www/first_site.com/error.log
+</VirtualHost>
+
+
+
+
+
+=>if the port is 80 you dont have to add it its by default 
+
+=>we can use the domain name insted of ip address 
+
+
+
+
+
+Single Ip two websites_in_one_ip_address(traditional and less painful way)
+
+	this is the most common appproach for creating multiple websites in  a single 
+websites.
+lets create two websites 
+	www.father.com
+	www.son.com
+	both lies in the same ip address suppose 10.0.2.15
+	in order to make it both accessible to the world we have to create two virtual host
+	and we will serve in one port not two different ports 
+	two different websites will be server at port 80
+
+	first create two folder inside the /var/www/html document
+
+
+1)make folder name is father and son
+
+=>mkdir -p /var/www/html/father
+=>mkdir -p /var/www/html/son
+
+and create the index.html inside the two directory and put some html code inside it
+
+
+2)edit the /etc/httpd/conf/httpd.conf file and insert the two virtual host 
+
+
+	first virtual host :father
+
+	<VirtualHost www.father.com>
+		DocumentRoot /var/www/html/father
+		ServerName www.father.com
+	</VirtualHost>
+
+
+	first virtual host :son
+	
+	<VirtualHost www.father.com>
+		DocumentRoot /var/www/html/son
+		ServerName www.son.com
+	</VirtualHost>
+
+
+
+	now we have to add the domain name in the /etc/hosts file 
+
+	this is very crucial factor
+
+	=>vim /etc/hosts
+	add the line
+
+
+	10.0.2.15 www.father.com www.son.com
+
+	=>remember always remember do not add the domain in a separate line
+	it may not work .best choice is adding the line togather
+
+
+	then restart the apache server
+
+	=>service httpd restart
+	=>sudo apachectl restart
+
+
+
+
+
+
+
+Two IPs, Two different websites
+--------------------------------
+--------------------------------
+
+
+Before implementing thsi we need to understand the usage virtual adapter in linux.
+traditionaly we need multiple network adapter to get access to the different different virtual server.
+in that case we use the virtual adapter 
+
+if we have 20 websites .using 20 physical adapter is not the most sensible choice.using virtual adapter is the solution here 
+
+using two website by creating two virtual adapter
+------------------------------------------------
+-----------------------------------------------
+
+
+1) first we create the virtual adapter
+
+	=> first we check the adapter and the IP
+
+################################################################################
+[vagrant@www ~]$ ifconfig
+enp0s3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::a00:27ff:fe6c:3e95  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:6c:3e:95  txqueuelen 1000  (Ethernet)
+        RX packets 712  bytes 70551 (68.8 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 566  bytes 72078 (70.3 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+#################################################################################
+
+
+2) we create the virtual adapter
+
+=>[vagrant@www ~]$ ifconfig enp0s3:1 10.0.2.100 netmask 255.255.255.0 up
+
+3)now check the connection again
+
+=>ifconfig
+
+################################################################################
+[vagrant@www ~]$ ifconfig
+enp0s3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::a00:27ff:fe6c:3e95  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:6c:3e:95  txqueuelen 1000  (Ethernet)
+        RX packets 977  bytes 90351 (88.2 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 701  bytes 84692 (82.7 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enp0s3:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.100  netmask 255.255.255.0  broadcast 10.0.2.255
+        ether 08:00:27:6c:3e:95  txqueuelen 1000  (Ethernet)
+
+#################################################################################
+
+
+
+4) Edit the httpd.conf file
+
+
+#################################################################################
+
+<VirtualHost 10.0.2.15>
+
+        DocumentRoot /var/www/html/father
+        ServerName www.father.com
+</VirtualHost>
+
+<VirtualHost 10.0.2.100>
+        DocumentRoot /var/www/html/son
+        ServerName www.son.com
+</VirtualHost>
+
+
+################################################################################
+
+5)change the /etc/hosts file
+
+
+################################################################################
+10.0.2.15 www.father.com
+10.0.2.100 www.son.com
+###############################################################################
+
+
+
+
+but the problem is configure a virtual network card is not persistance we have to make it parmanent by writing a network scripts
+
+						creating a network subinterface in centos
+						-----------------------------------------
+
+1)go to the /etc/sysconfig/network-scripts
+
+=> cd /etc/sysconfig/network-scripts
+
+2)then we create a file at the name of the interface
+in this case
+
+=>vim  enp0s3:1
+
+and add the line
+
+for static ip
+##########################################################
+DEVICE=enp0s3:1
+IPADDR=10.0.2.100
+NETMASK=255.255.255.0
+NETWOEK=10.0.0.0
+BROADCAST=10.0.2.255
+ONBOOT=yes
+##########################################################
+
+
+for dhcp 
+########################################################
+
+DEVICE=enp0s3:1
+BOOTPROTO=dhcp
+ONBOOT=yes
+#########################################################
+
+=>service network restart
+
+
+
+						create network subinterfave in the debian /ubuntu
+						--------------------------------------------------
+
+first go to the /etc/network/interface
+=>vim /etc/network/interface
+
+and add these tline
+
+for static
+##############################################################
+iface enp0s3:1 inet static
+address 10.0.2.100
+netmask 255.255.255.0
+broadcast 10.0.2.255
+##############################################################
+
+
+for dhcp
+##############################################################
+
+iface enp0s3:1 inet dhcp
+
+##############################################################
+
+=>service network restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+
+										.htaccess
+										----------
+
+
+
+.htaccess stands for hypertext access.this is the directory level configuration file for the Apache web server.this file is used for giving security restriction in the directory level
+
+.htaccess is a configuration file for use on web servers running the Apache Web Server software. When a .htaccess file is placed in a directory which is in turn 'loaded via the Apache Web Server', then the .htaccess file is detected and executed by the Apache Web Server software. These .htaccess files can be used to alter the configuration of the Apache Web Server software to enable/disable additional functionality and features that the Apache Web Server software has to offer
+
+
+
+
+
+
+=>this is used for requiring  authentication for accessing dor accessing different different webpages.
+=>.htaccess the secondary protection for your server.for primary protection you should use the httpd.conf file
+
+=> it is not suitable for securing the sensitive information.
+
+=>.htaccess loded everytime the url visited.thats create a performance loss and slow the process
+
+.htaccess is veryusefum in multiple user hosting .so the user can not access the main configuration file.they can access only certain functionality
+
+like content password protection,and redirect the page
+
+
+
+
+use this link
+
+http://www.htaccess-guide.com

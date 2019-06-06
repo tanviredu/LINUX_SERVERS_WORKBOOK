@@ -1,0 +1,254 @@
+basic web server (Apache)installation and configaretion 
+-----------------------------------------------
+web server are computers that are usually built to store websites so that people can visit them on internet.the files stored on a webserver are read by the browsers in the client computer.browser ccommunicate with the web servers to bring you information from the internet.web server can communicate with multipla computer all at the same time.it has the capability of sending the same file or different file to a lot of users at the same time.computer hardwere play very important role in the server.how fast the server is determined by how fast the processor speed.
+dedicated computer is used 
+for this serving purpose.
+
+A programm is also needed to perform this action.these program is also known as web server.
+so web serverver are actualy the hardwere with the server softwere running on them.
+this softwere programm is slightly different than the other softwere. This softwere or programms are called the deamons.they run in the background.the are not in the direct control of the users.
+
+
+
+This progamm used hypertext transfer protocol
+to serve the files from webpages to users in response to their request which sent by the user.
+mordan webserver comes with some extra functionality
+like serve email,file transfer protocol  
+
+
+
+
+
+the web server also run programm which are installed in them
+like wordpress,joomla.database
+etc.
+
+there are serverel webserver in linux 
+
+
+1)Apache HTTP server
+2)NGNIX
+3)Apace Tomcat
+4)Lghthttpd
+
+
+Among the web server the Apache web server is the most used web server all over the world. 52% of the all the websites in the world is ran in Apache.Apache web server is most often seen running on linux .It has a great documentation and integreted support fro other softwere oprojects.
+
+Another popular web server is NGINX.it has the capability to handle massive concurrent session.it is very popular for its light resources utilization and ability to scale easily.it can also user for proxy server and load-balancer.
+
+
+installing Apache webserver in linux:
+----------------------------
+in some operating system apache web server in already installed .
+first we check if the apache web ser 
+
+first we have to varefy that Apache is installed
+
+in redhat based system
+
+=>sudo rpm -q httpd
+=>sudo rpm -qa | grep httpd
+or
+=>sudo rpm -q apache2
+in debian based system:
+
+=>sudo dpkg -l apache2
+=>sudo dpkg -l | grep 'apache2'
+
+if you get an empty prompt or saying tht packages is not installed you have to install it
+
+installing the apache webserver:
+------------------
+
+in centos:
+
+=>sudo yum install httpd
+
+or you could just downlaod the packages
+and installed manually
+
+=>sudo rpm -i <apache packages>
+
+
+in debian based system:
+---------------------
+
+=>sudo apt install apache2
+
+manual install:
+
+=>sudo dpkg --install <apache packages>
+
+
+
+file structure of the apache application
+
+
+/usr/sbin/httpd
+-----------------
+
+contains the server binary file
+
+/etc/httpd
+-----------
+
+contains the server configaretion file
+
+/etc/httpd/conf
+-----------------
+directory contains main configuration file
+
+/etc/httpd/conf.d
+--------------------
+in this directory configuration files for modules like ssl,php perl are stored
+
+/etc/httpd/logs
+------------------
+contains the loggin information its actually a symbolic link for /var/log/httpd
+
+/etc/httpd/modules:
+--------------------
+
+symbolic link to /usr/lib/httpd/modules which contains the server modules
+
+/var/run/httpd.pid:
+-------------------
+
+server process ID
+
+/var/www/html:
+-------------
+conntains the public html files.in there all the application and html css file are stored . and it is accesseble by the public user
+
+
+
+
+
+main configuration is in the 
+/etc/httpd/conf/httpd.conf
+
+
+in the file
+
+ServerRoot "/etc/httpd"
+
+this /etc/httpd is the location of the server configuration,error and log.its the top of the directory under which every thing stored
+
+
+ServerName:
+-------------
+
+this is the one settings that you must have to change to get your server running.this is where you declare the the name of your website
+
+
+DocumentRoot:
+-------------
+
+DocumentRoot shows you the location where the web documents(html,css,images) are located.its also possible to redirect to other directory using aliases and symbolic link.default is
+
+/var/www/html
+
+
+
+ErrorLog:
+-----------
+
+ErrorLog tells you where the log containing all servers errors is located.This files is necessary for solving misconfiguration and all the problem and for determine the traffic shape.by default all masseges with the value of warning and higher wil be logged.
+the default location is
+/etc/httpd/logs/error_log
+its inside the ServerRoot
+there is also a sybbolic link to /var/log/httpd
+
+so another location is /var/log/httpd/error_log
+
+
+Listen:
+-------
+
+the  Listen command tells the web server what ports web server use for income connection.by default 80 port is used.several port is used.port 80 is used for non-secure web communication.Secure web connection is used for 443
+
+
+
+
+
+starting web server:
+
+-------------------	
+		
+in red hat based system:
+-----------------------
+
+
+=>service httpd start
+or
+=>systemctl start httpd
+
+in debian based system:
+---------------------
+
+=>systemctl start apache2
+or
+=>service apache2 start
+
+
+to find the process od of the of the web server command is
+
+in redhat based system:
+-----------------------
+
+=>service httpd status
+
+
+in debian based system:
+-----------------------
+
+=>service apache2 status
+
+
+another method is
+-----------------
+in red-hat based system
+------------------------
+
+=>ps -ef | grep httpd
+
+
+in debian based system:
+------------------------
+
+=>ps -ef | grep httpd
+
+web servers can dynamically kills and creates process based on the trafic load
+
+
+ if the Apache web server configured at port 80 or any other secure port .it has to be started as root.
+
+
+
+ visiting our web site
+ -------------------------
+
+		accessing the web server locally:
+		------------------------------
+
+
+
+
+you can just visit the website using the browser just typing the url "localhost".
+most of the time we will see a testing page that will show that apache web server is runing if we can correctly installed the web server.
+
+we can give it a name using the /etc/hosts file.
+
+=>vim /etc/hosts
+
+127.0.0.1 www.example.com
+
+then we can access the website locally using the name "www.example.com"
+
+
+	acess the website extarnaly:
+	---------------------------
+	we can access this same website from the other machine .if the ip address is in the same subnet.we can just access the web site by putting the ip address.but in this case using the name "www.example.com" does not help because in the other machine .because nothing telling the other machine that "www.example.com" is the ip address of the perticular computer.we can also resolve it by putting the same name in the hosts file.
+
+	Theoritically we can do that in every host of the networj.but it is not a good nither practical.it is impossible to add the domain to the every hosts file of every hosts.and even we do this thing we cannot access the website from outside the network.
+to over come this problem can be solved by con figuring and running a DNS server.

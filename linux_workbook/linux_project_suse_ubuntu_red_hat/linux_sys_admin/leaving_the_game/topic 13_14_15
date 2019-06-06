@@ -1,0 +1,112 @@
+
+
+###########################  mounting  and un mounting the drive   #####################
+
+
+to see the mount point of different drive
+
+command
+
+=>lsblk
+
+for example to mount the cdrom in text mode first see the drive label
+
+here is the example of my computer
+
+but remember all the vblock are in the /dev directory 
+=>lsblk
+
+output:
+------------------------------------------------------
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0  42.1M  1 loop /var/lib/snapd/snap/gtk-common-themes/701
+loop1    7:1    0 135.1M  1 loop /var/lib/snapd/snap/chromium/500
+loop2    7:2    0 180.5M  1 loop /var/lib/snapd/snap/warzone2100/65
+loop3    7:3    0  87.9M  1 loop /var/lib/snapd/snap/core/5548
+sda      8:0    0 465.8G  0 disk 
+├─sda1   8:1    0   200M  0 part /boot/efi
+├─sda2   8:2    0     1G  0 part /boot
+├─sda3   8:3    0   3.5G  0 part [SWAP]
+├─sda4   8:4    0    50G  0 part /
+└─sda5   8:5    0 411.1G  0 part /home
+sr0     11:0    1  1024M  0 rom 
+---------------------------------------------------
+
+so the cd rom is sr0 to mount it
+
+
+
+=>mount /dev/sr0 /mnt
+
+or
+
+first create a empty directory
+remember being empty is not optional
+
+
+=>mkdir folder
+=> mount /dev/sr0 folder
+
+
+
+
+#################################        #######################################
+##########################   USING THE VI EDITOR	 ############################
+################################################################################
+
+
+TO CREATE NEW FILE IN VIM EDITOR
+
+=> vim file.txt
+
+for write and exit 
+
+=>esc then :wq then enter
+
+if you press esc(escape button it will go to the in active mode)
+
+
+how to delete line
+
+go to that line which you want to delete then
+=>Esc
+=>dd
+
+
+the line will be deleted
+
+undo that action 
+=>Esc
+=>:u
+
+
+
+
+
+
+
+how to copy and paste the a text
+
+go to the line from that you eant to copy 
+now suppose you want to copy the foloowing 5 line 
+so
+go to inactive mode means press Ese key
+then 
+=>5 yy     [for copy 5 line]
+then move the cursor where you want to paste
+=>pp       [for copying]
+
+
+
+
+setting number parmanently in the vim editor
+
+=>cd
+=>vim .exrc
+write "set number"
+
+=>Esc
+=>:wq
+
+########creating .vimrc will give you the same result
+

@@ -1,0 +1,262 @@
+
+
+
+
+					other boot opton in linux
+			---------------------------------------------
+			---------------------------------------------
+
+
+
+	grub --> grand uniform bootloader
+	lilo --> linux loader
+
+
+	now most of the linux os use the grub boot loader
+
+	because:
+	---------
+
+
+	A. initialization time control
+	B.in grub boot loader give priority to the linux os in case of the dual boot
+	C. impossible to break the grub password
+	D. very secure
+
+
+
+
+			location of the grub configaretion file
+		-----------------------------------------------
+
+		in redhat 7 it is located in /etc/grub2.cfg 
+
+		in previous red hat distribution it is /etc/grub.conf
+
+
+		if we search for timeout option by this command 
+
+		ls grub2.cfg | grep timeout
+
+		we will find that timeout=5
+		so it wait 5 seconds after that it will automatically boot
+		and we can lower the value of the boot time
+
+
+
+
+
+
+						linux directory structure
+				--------------------------------------------------
+				##################################################
+				--------------------------------------------------
+
+
+
+		if we go to the mountpoint we get 
+
+		/
+		|
+		|------>bin,etc,boot,dev,fome,lib,mnt,opt,proc,sbin,var
+
+		thsi is under the root pertition
+
+		white colored resources ------------->file
+		blue color resources    --------------> folder
+		green color resources   ---------------> executable file
+
+		block color red        ----------------->run level file(or running file)
+
+
+
+
+				showing hidden file
+			-----------------------------
+			=> ls -a
+			if we put a '.' before a file or maybe a folder it will be a hidden file/folder
+
+
+
+
+
+						different folder explained
+				--------------------------------------------
+
+
+			bin -----------> binary executable file lies here
+
+			if the folder is removed no command will work
+
+			boot --->initialization file kernel file stay in here
+
+
+			dev  ---->hardwere related file remains here
+					----> if the dev folder is missing os can detect the hardwere
+
+			etc --> all the linux conf file remains here
+
+			home -->linux users file lies in here different different users 
+							have different different users folder in here
+			lib---> library related dependency file stay in here
+
+			lib64  ---> 64 bit compatable library file stored in here
+
+			media --->extarnal periferals run script file stored in here
+
+			mnt  --> extarnal devices like flash drive and cd rom mounted in here
+
+			opt ---> third party binary file located in here
+
+
+			proc ---> temp conf file during the boot process lies here process related file
+
+
+			root--> administrator home directory
+
+			run ---> running files in os lies here
+
+
+			sbin ---> system binary file located in here
+
+
+			srv ---> server related file stay in here
+
+
+			tmp ---> temporary file like the recycle bin file stay in here
+
+
+
+			usr ---->  user related linking file stay in here
+
+
+			var --> variable related mail stored ion here 
+
+					--> to configure a mail server we need to give larger space 
+					--> in this folder
+
+
+
+						run level file
+			---------------------------------------
+			#######################################
+			--------------------------------------
+
+
+			runlevel file is stored in the /etc/inittab file
+
+
+
+
+
+
+
+					   user accouunts
+  				--------------------------------
+  				################################
+  				--------------------------------
+
+
+  			role of root
+  			------------
+
+  			administrator in the linux system is called root
+  			root can do any modification creation deletetion of the system
+
+
+  			user create 
+  			------------
+
+
+  			when a user is created there four place the information is 
+  			stored
+
+
+  			1) /etc/shadow
+  			2) /etc/passwd
+  			3) /var/spool/mail
+  			4) /home
+
+
+  			user can be created in two way
+
+  			when the system create it there possase the id between 0 to 999
+
+  			and the root id=0
+
+  			and if the administrator manualy create the user accounts 
+  			they have the id between 1000 to  ~
+
+
+  			if we go to the /etc/passwd
+
+  			we see this kinf of line
+
+
+  			root:x:0:0:root:/root:/bin/bash
+
+  			lets divide it to understand
+
+  			1)root --->user name
+  			2)x    --->encryption
+  			3)0    --->user id
+  			4)0    --->group id
+  			5)root --->level name
+  			6)/root --> home directory
+  			7)/bin/bash --> shell
+
+
+
+
+  			in the /etc/shadow file we see some thing like this
+
+  			root:$6$IDdJWI5Zhjz4Efdi$Cpu/K8RVv4cLwS4DllHKqzkZn8rvIyyf6XnjbsLLcpSv0Axn.xbBv50
+
+  			this is actually the encrypted password file
+
+
+
+  			user creation
+  			------------
+
+  			==> useradd <name>
+  			==> passwd <password_for_the_user>
+
+
+  			after that
+  			if we fo to the 4 location we will find 
+
+  			four different entry in the four location
+
+  			/etc/passwd
+  			/etc/shadow
+
+  			we will see the there are entry in two different file
+  			and two folder in  home and /var/spool/mail
+
+
+
+
+  			delete users
+  		--------------------
+
+
+
+  			==>userdel <username>
+
+  			now if we do that the user will not be completely delete
+  			we have to manually delete the home folders user directory
+  			and the users folder in /var/spool/mail directoey
+
+  			rm -rf /var/spool/mail/<user_directory>
+
+  			rm -rf /home/<user_directory>
+
+
+  			alternative method
+  			-----------------------
+
+  			userdel -r <user_name>
+
+  			this will delete all the entry automatically
+  			

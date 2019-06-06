@@ -1,0 +1,196 @@
+				introduction to the linux file system
+			--------------------------------------------------
+
+
+first navigating file system:
+-----------------------------
+sysbol inside the brackets :             	     meaning 
+---------------------------         	        -------------
+(.)  					-------------->			current directory
+(..)  					-------------->			parent directory
+
+(~)  					-------------->			user home directory
+
+(/)  					-------------->			root directory
+                 
+
+
+example:
+
+=>cd .    
+applying this command will change nothing that mean you are on the same directory
+
+=> cd ..
+
+applyoing this command will take you to the previous on other word the parent directory
+
+=> cd ~
+
+this command will take you to the home diorectory
+
+same result od the  only 'cd' command
+
+=> cd /  
+this command will take you to the root directory the main root directory
+
+
+if you are on a directory but you want to know the full path of the directory
+
+command is
+=>pwd
+
+pwd-> present working directory
+
+
+
+directory listing command 
+------------------------------
+
+ls --> just show the list
+
+ls -a ---------> it will show hidden file and folders as well
+
+ls -F  ------> it will help you to differentiate between the file and directory
+
+ls -l    --------->show you with proper details
+
+
+ls -R -----> it is the recursive listing command show you every folder insider every folder all the folder
+
+
+
+
+if you want to know the details listing aboutn a specfic folder 
+
+
+=> ls -ld <folder>
+
+### remember for folder -ld not just l
+
+
+want to know about the details about a file
+
+=> ls -l <file>
+
+
+
+
+if you want to create multiple file with touch command 
+
+=> touch file1 file2 file3
+
+
+
+to search a folder or a file using name or a part of the name here the example
+
+
+
+
+
+==> ls | grep <file/foldername>
+==> ls -c -it <file/folder>
+==> ls <file/folder>  ## in this command you have to use fullname
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------- creating and removinf folder file---------------------------
+
+folder creation:
+---------------
+
+=>mkdir <folder_name>
+
+go to that folder
+
+=> cd <folder_name>
+
+
+creating recursive folder(folder inside another folder)
+
+
+=>mkdir -p fol/fol1/fol2
+
+
+
+--------------------------------------
+pirate@localhost[~/Documents]---$ cd fol/
+pirate@localhost[~/Documents/fol]---$ cd fol1/
+pirate@localhost[~/Documents/fol/fol1]---$ cd fol2/
+pirate@localhost[~/Documents/fol/fol1/fol2]---$ ls
+pirate@localhost[~/Documents/fol/fol1/fol2]---$ 
+--------------------------------------------------
+
+
+
+
+delete a folder 
+-----------------
+
+for empty folder :
+
+=> rmdir <folder_name>
+
+
+
+folder full of contents:
+------------------------
+
+rm -rf <folder_name>
+
+## this is a dengerous command
+
+
+
+to delete everything inside a folder:
+-----------------------------------
+
+
+rm -rf <folder_name>/*
+
+
+## * means all it is a wildcard command
+
+
+
+
+moving and renaming folder:
+--------------------------
+
+=> mv <file_name> <folder_path>
+
+
+its the same way you can remane the file
+if you move the file in the same directory with different name 
+thats how the rename is done
+
+mv hello.txt bye.txt
+
+
+
+---------------------------------------------------------------------------------------
+###################### finding and the exucating command############################## 
+---------------------------------------------------------------------------------------
+
+=> find <the path from we want to start> -type <f for file d for directory> -name <file name>
+
+=>find </home> -type f -name <file>
+
+it will start searching the file form the /home directory
+
+if you have the permison you can start search from the / directory
+
+
+
+find and execcuting command (find and deleting file )
+
+=>find <path from search start> -type f -name <file_name> -ok rm {} \;
+
+
+
+
+
+
+
+

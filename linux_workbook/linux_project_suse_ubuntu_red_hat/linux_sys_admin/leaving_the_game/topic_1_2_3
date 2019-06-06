@@ -1,0 +1,427 @@
+part 1:
+----------------
+
+
+
+
+
+
+								installation of redhat
+				---------------------------------------------------------
+
+	To boot the os red hat seven there should be minimum three partition 
+
+1) /boot 	→ the vmlinuz file the boot patition
+			→the size should be 200 -300 MB
+			→ 300 MB is enough
+2)/swap  	→swap partition is for the backup of the ram
+			→ if the ram is overloaded  
+			-> the extra file will be loded in the swap patition
+			---> it is possible to load an os without swap
+			--> but if the ram overload the system will crash
+			-->the size of the swap partition will be two times than
+			-->the size of the ram but in virtual machine 1GB is enough
+3)/         --> root partition is the main mount point of all 
+			-->should be as big as possible actually the rest of the 
+			-->size of the size will be allocated in this parition
+
+			size== all the size left in the harddisk
+
+
+							installation criteria
+		-------------------------------------------------------------------------
+
+
+
+1)there are diferent different criteria 
+		-->can install the basic server
+		-->server with gui(gnome or kde)
+		-->or can be database or web server or mabe load balancer
+		-->we choose the server with gui (desktop environment will be gnome)
+										-->acctually it does not matter 
+										-->we do all work in run level 3
+
+
+
+
+
+2) we login as root(the administrator of the os) open a terminal and type
+
+		=>init 3      //this will activate the text mode 
+
+
+
+										prompt
+							----------------------------
+							----------------------------
+		root@localhost# 
+		  |		|	  |
+		  |		|	  |---> this symbol is for the root  if the '$' sign then its user   
+		  |		----------------its the domain of the computer
+		  |
+		  ---------------------> its the root user of 
+
+
+
+		  									logout
+		  				-------------------------------------------------
+		  				to logout from the prompt 
+		  				=>CTRL+d
+		  				//it will logout from the session in text mode
+		  				another method
+		  				=>logout
+
+
+
+
+
+		  								X11 mode
+		  				---------------------------------------------------
+
+				-->x11 mode is called the gui interface
+		  		-->graphical user interface is called x11 in the linux system
+
+		  							reboot hte system
+		  			----------------------------------------------
+
+		  			to reboot the system is worked int the 
+		  			run lebvel 6
+
+		  		--> runlevel 6 is the reboot level 
+		  		-->to reboot type
+		  		==>intit 6
+		  		or
+		  		==>reboot
+
+
+
+
+
+		  							different run level
+				--------------------------------------------------------------
+				**************************************************************
+				--------------------------------------------------------------
+
+				-->there are 7 run level in linux system
+
+				runlevel 0 --> is the shutdown signal.shudown in ATX(shutdown with 
+				-----------
+				physically power down) is controlled in run level 0
+
+				runlevel 1 --> single user mode (recovery mode) if the os is crippled 
+				----------
+				you can log into this system to recover the system 
+
+				runlevel 2 --> multi user mode without the NFS.this runlevel will give 
+				----------
+				you the multi user mode but without networking facilites
+				
+				runlevel 3 --> multi user mode with NFS(networking facilities)
+				-----------
+				it is the default mode of any linux system
+				
+				runlevel 4--> unused and it is wildcard that means it is the customizable
+				-------------
+				as the user need .it is blank basically
+
+				runlevel 5 --> it is the x11(gui) mode some desktop os has this 
+				-----------
+				as a default run level.
+
+				runlevel 6 --> run level 6 is the reboot run level.
+
+
+				
+				
+
+
+
+		 	 		    parmanently change the the runlevel of os
+		 	 	-----------------------------------------------------------
+		 	 	***********************************************************
+		 	 	-----------------------------------------------------------
+		 	 	typing =>init 3 or 6 will switch the run level but it is not a 
+		 	 			->parmanent change .to parmanently change the system
+
+					->to set the graphical environment   
+
+		 	 		=>systemctl set-default graphical.target
+		 	 		-> to set the text mode the command is
+		 	 		=> to set the text environment we type the command
+
+		 	 		==>systemctl set-default multi-user.target 
+							
+		 	 		------------------------------------------
+							output of the system
+					---------------------------------------------
+############################################################################################
+					rm '/etc/systemd/system/default.target'
+					ln -s '/usr/lib/systemd/system/multi-user.target' '/etc/systemd/system/default.target'
+############################################################################################
+
+	it wil remove the default.target file and create a soft link as the default.target
+
+
+
+
+#############################3
+
+
+to power of the system 
+----------------------
+command is 
+==>poweroff
+
+									command syntax
+				------------------------------------------------------
+				######################################################
+				------------------------------------------------------
+
+
+command <space> -option <space> argument
+
+
+
+
+
+command systax rule:
+--------------------
+
+
+if the argument is numeric then wwe use no [-] or any sign 
+
+numerical --> no sign
+
+
+
+if the argument is a character we will use one [-] sign
+
+like => cal -y [this command will show the calender of the whole year]
+
+
+if the argument is the a string/word 
+then we will use the two -- sign
+
+=> virsh list --all
+
+this will show all the virtual os installed in your computer
+
+
+
+
+###### some command
+
+=>date       ##this command will show the date
+=>ls         ## listing command list all the files in the current position/directory
+
+
+cd /       ## change directory command cd this command will change 
+		   ## will change the directory to the mount point
+
+
+
+		   /   is the mount point
+
+
+
+=>ls -l     //this is the long listing command 
+
+it will show the
+
+permission id user group date and resources
+
+
+								using the multiple command
+						-------------------------------------------
+						##########################################
+
+
+to use multiple command in one prompt
+we pit a semicolon after every command
+example
+=>cal;cal 7 2015;ls;cd /;ls -l;
+
+
+
+
+
+
+output:
+-----------
+
+
+    October 2018    
+Su Mo Tu We Th Fr Sa
+    1  2  3  4  5  6 
+ 7  8  9 10 11 12 13 
+14 15 16 17 18 19 20 
+21 22 23 24 25 26 27 
+28 29 30 31          
+                     
+      July 2015     
+Su Mo Tu We Th Fr Sa
+          1  2  3  4 
+ 5  6  7  8  9 10 11 
+12 13 14 15 16 17 18 
+19 20 21 22 23 24 25 
+26 27 28 29 30 31    
+                     
+topic_1_2_3
+total 64
+lrwxrwxrwx.   1 root root     7 Aug  2  2017 bin -> usr/bin
+dr-xr-xr-x.   7 root root  4096 Sep 17 02:50 boot
+drwxr-xr-x   22 root root  4260 Oct  1 11:30 dev
+drwxr-xr-x. 177 root root 12288 Oct  1 11:12 etc
+drwxr-xr-x.   4 root root  4096 Aug  2 09:26 home
+lrwxrwxrwx.   1 root root     7 Aug  2  2017 lib -> usr/lib
+lrwxrwxrwx.   1 root root     9 Aug  2  2017 lib64 -> usr/lib64
+drwx------.   2 root root 16384 Nov  5  2017 lost+found
+drwxr-xr-x.   2 root root  4096 Aug  2  2017 media
+drwxr-xr-x.   3 root root  4096 Sep 24 03:43 mnt
+drwxr-xr-x.   9 root root  4096 Sep 29 10:34 opt
+dr-xr-xr-x  279 root root     0 Oct  1 11:10 proc
+dr-xr-x---.  35 root root  4096 Sep 29 10:45 root
+drwxr-xr-x   52 root root  1720 Oct  1 12:11 run
+lrwxrwxrwx.   1 root root     8 Aug  2  2017 sbin -> usr/sbin
+drwxr-xr-x.   2 root root  4096 Aug  2  2017 srv
+dr-xr-xr-x   13 root root     0 Oct  1 11:11 sys
+drwxrwxrwt   18 root root   420 Oct  1 14:46 tmp
+drwxr-xr-x.  13 root root  4096 Aug  2 12:58 usr
+drwxr-xr-x.  23 root root  4096 Aug 19 05:25 var
+
+
+
+
+
+										piping command
+							-----------------------------------------
+
+
+
+transfer one command to another
+-------------------------------
+There is a command called 
+=>more 
+A file perusal filter for CRT viewing.
+
+and ls is the listing command 
+
+so if we want to see the listing command in a column view 
+we pipe the command into the more command
+
+
+
+pirate@localhost[/]--$ ls | more
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+lost+found
+media
+mnt
+
+
+					to see the history of all the command
+			-----------------------------------------------------
+
+=>history
+
+
+-----------------------------------------
+to delete history we will use the following command
+this is a very useful command 
+to deleter all the command history
+-----------------------------------------
+
+=>history -c
+
+
+
+
+									getting info
+						--------------------------------------
+
+
+to see the manual of all the program we are using
+=>man <command>
+
+it will show the manual of the specfic command
+
+even we can see the manual of the man command itself
+
+
+to store the manual of the in a file
+
+the command is
+
+=> man -t <command> > file.ps
+
+
+
+to see the command manual in a pdf format
+
+command
+
+=>evince file.ps
+
+## evince is a gnome pdf viwer 
+
+
+to see the page in the specfic page
+
+=>evince  -i <page_number> file.ps
+
+example:
+
+=>evince  -i 3 file.ps
+
+
+
+
+
+
+				virtual terminal [the tty command]
+		----------------------------------------------------------
+
+
+		in the tect mode you can acctualluy work with the seven terminal at once 
+		it is acctually a virtual terminal.
+
+		the seventh terminal is acctually X11 mode other is the text mode termianl
+
+		7 user can simultaniously or may be one user use the 7 terminal at once
+
+
+		to go to the virtual terminal
+
+		COMMAND IS
+		-------------
+		CTRL+ALTR+F1-F6
+
+		sometimes the F7 not always work 
+
+		then to switch to graphical
+
+		=>startx
+
+		
+
+
+
+
+
+
+
+
+
+									calender command
+				-------------------------------------------------------
+				#######################################################
+				-------------------------------------------------------
+
+
+				=> cal 
+				this command will show the calander of the minth

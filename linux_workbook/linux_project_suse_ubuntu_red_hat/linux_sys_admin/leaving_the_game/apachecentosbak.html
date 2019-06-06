@@ -1,0 +1,181 @@
+Advance Apache web server configuration (in centos 7 and redhat 7)
+---------------------------------------
+
+Apache web server is highly customizable .there are a lot of directives that we can customize.
+we will discuss about the following
+
+1) Directory Tags
+2)Order(allow,deny)
+3)Indexes
+4)Directory Match
+5)Files tags
+6)Directory,File and Locations tags
+7)Redirect
+
+
+we also cover 
+1)configuring setting one ip for two websites
+2)configuring two ip for two different websites
+
+
+
+====================================================================
+
+
+
+1) directory tags
+
+directory tags allow you to specify the configurations separately for seperate folder.we can customize each pages with each configuration.the process is like the tml <div></div>tag we use the div tag for different different block.it just work like different different folder
+
+	
+
+
+	directory tags thke the following form
+
+	=> <directory directory_path>
+		=>series of options thatcontrol accessng web pages
+	=> </directory>
+
+
+
+
+
+	basic directory configuration applied to the "/" directory
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride none
+	</Directory>
+
+
+
+=>Options FollowSymLinks
+
+	it allows the web pages to use the symbolic links to point to the files located anywhere under the root (/) directory
+
+=>AllowOverride none
+
+	it tells that if the restriction imposed by the option is controlled by the .htaccess file or not . its default value is none so there will be no security breaches due to misconfiguration
+
+=================================================================================
+2)Order(allow and deny)
+the  Order directive specify that how the allow and deny work.The order of (allow,deny) create a default allow it is used for creating a blacklist.the Order(deny,allow) create a default deny .used to create a whitelist. 
+allow and deny govern the access to the directory.we can allow or deny client from accessing the server using
+=>host name
+=>domain name
+=>ip address
+=>partial ip address
+=>subnet and more
+
+
+
+for an example if the ip of ther server is "192.168.10.200"(IN THE LAN) and we want to allow only the ip and deny all others
+the systax will be
+
+<directory />
+	Order deny,allow
+	Deny from all
+	Allow from 192.168.10.200
+</directory>
+
+
+	After changing this we have to reload the server.remember if you do not add the allow statement no one can access the website not even you.
+
+
+=> service httpd restart
+or
+=> service apache2 restart
+
+
+3)Indexs
+----------------
+
+The indexes directive acctually tells what to display the list of directory when asked.its depends on another directive is called "DirectoryIndex"
+DIrectoryindex acctually tells the server whats the default pages of the server.Basically  clients trying to access the the webpages by just typing the name not typing the exact  page url like index.php or index.html.server acctually look in the "DirectoryIndex" and automatically present to the user
+
+If no file is found then it shows the whole file listing
+
+if the "Options Indexes" is not in the directory tag then it will not show any directory listing
+
+
+===============================================================================
+
+4)DirectoryMatch:
+--------------------------------------------------------
+
+the statement that is inside the DirectoryMatch will apply to all directory and the sub directory.if any one try to customize their rules even more then it is used.main difference is in the DirectoryMatch you have to use the regular expression
+
+
+
+5)Files tags
+
+it is very simmilar to the directory tags.the main difference is directory tag controls the permission by the enclosed directives in the directory level and the Files tags do the same at the files lavelin a short the Files tags can be used to manage the behaviour of a single files or can be a lot of files
+
+for example 
+
+<Files ".ht*">
+    Require all denied
+</Files>
+
+
+ these directives inside the Files will prevent the web clients form accessing the the .htaccess and .htpasswd file.here using regular option multiple file is covered byt a single rule
+
+ there is also a directives FileMatch which is also work like the DIrectoryMatch
+ directives and it is used by complex regular expression for handling multiple files
+
+
+6)Location tags:
+---------------
+location tags are used like the the files and directory tags the only difference
+files and directory tags are used to control inside their corresponding location like Directory and the sub-directory but location tag are used to control that is outside the system .for example database interaction with the web server is controlled ibside the location tag
+
+7)Redirect:
+--------------
+
+the redirect settings allows rediect the url . it allow the web server to redirect to a new domain.if you change the doamin or try to redirect to your another site you can do it with this directives.
+
+the configuration syntax is
+
+<IfModule alias_module>
+	Redirect permanent /<yoursite.html> <your_target_site_url>
+	Redirect permanent /index.html http://www.facebook.com
+</IfModule>
+
+
+
+
+
+
+									VIRTUAL HOSTS
+	==========================================================================
+
+	In apache server you can run multiple website in a single computer.it is a powerfull feature and a very flexible feature.it can be based on the ip or name.
+	Virtual Hosts can run all the option used in the httpd.conf file.you can consider each Virtual Hosts as a separate configuration file.its like a nested configuration file in one httpd.conf file
+
+	CREATE TWO VIRTUAL HOSTS:
+	-------------------------
+
+
+	first step:
+	-----------
+
+	first we have to create a directory structure that hold our website data
+	by default the Document root in our main apache server is 
+	"/var/www"
+
+	we create two directory inside the Document Root for two different virtual hosts
+
+	and we create a "public" folder inside each of the folder 
+	files inside the public folder files can be accessed by public
+
+	=>sudo mkdir -p /var/www/first_site.com/public
+	=>sudo mkdir -p /var/www/second_site.com/public
+
+	we will server two websites 
+
+	first_site.com
+	second_site.com
+
+	with our vps server
+
+

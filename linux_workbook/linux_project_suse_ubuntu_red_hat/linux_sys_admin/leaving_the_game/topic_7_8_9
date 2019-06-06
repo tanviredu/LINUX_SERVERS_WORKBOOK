@@ -1,0 +1,273 @@
+										topic 7_8_9
+							________________________________
+
+
+
+			=> su [switch user command this command help to switch user]
+
+			we can switch user from one user to another with this commmand
+
+			we have to keepo in the mind that
+
+
+			=>if the root user go to another account it does not need any password
+			=> if user need to switch account password is needed
+			=> if the user want to switch to root account password is needed
+
+			switch user is easy
+			command is
+			=> su - <username>
+
+
+
+
+										/etc/skel folder
+							__________________________________________
+
+
+					this is the share folder 
+					whatever the user do do it is not going to share
+					in other word one user or any user can never see the resource
+					of the root user
+
+					but there is one exception of the rule is the
+
+					/etc/skel folder.this folder is accually made for sharing
+					and it can be accessible only by the root
+					and whatever the root is saving in this folder other 
+					user can access the resources.just like a share folder
+
+
+
+
+							creating  group in linux
+						____________________________________
+
+
+
+		we can create a group of user and give them certain permission and 
+		policy to act so we dont have to give the the permission to 
+		all individual user .this is like a vlan accuallt in the networking
+		specific group get specfic privileges
+
+
+
+
+
+		user group is sored in the following folder
+
+		=> cat /etc/group
+
+
+		actually in this folder not only group but also user are in the file
+		all in the same file by default just like the vlan
+
+
+
+		first create a group first
+
+		groupadd <group name>
+
+		excample:
+		------------------
+		=>groupadd sales1
+		=>groupadd sales2
+		=>groupadd sales3
+
+
+		now every group has a group id 
+
+
+		we will see the group file in the
+		=> cat /etc/group
+
+
+		we will see the new group with an id 
+		we can change the id and the id is after the 1000
+		beacause they are created by the root user not the system
+
+		so to change the id of the group (because we can decide to keep the
+		group id between a certain limit)
+
+
+
+		changin group id is
+
+		=>gruopmod -g <id_number> <group_name>
+
+		=>groupmod -g 5000 sales1
+
+
+		//remember the small letter .its case senstive 
+
+		[but remember after the  group id is changed if you create another group new group
+		will have the id just after the id you set like 50001]
+
+
+
+
+							to delete the group
+						______________________________
+
+		to delete the group just like the userdel
+		the command is groupdel
+
+
+		=>groupdel <group_name>
+
+
+
+		then see weather the group is deleted o not 
+
+		=>cat /etc/group
+
+
+
+					ADDING MEMBER TO THE GROUP
+			__________________________________________
+
+
+			=> usermod -G <group_name> <user_name>
+
+
+			but you can add a user to multiple group
+
+			because a member can also be a member to multiple group
+
+			=>groupmod -G <list+_of_group> <username>
+
+			example:
+
+			=> groupmod -G sales1,sales2,sales3 tanvir
+
+
+
+
+
+
+
+			DELETING A USER FROM TA SPECFIC GROUP
+		----------------------------------------------
+
+		=> gpasswd -d <user_name> <group_name>
+
+		example:
+
+
+		=>gpasswd -d tanvir sales1
+
+
+
+
+
+					important command lock the user and unlock the user
+				_______________________________________________________________
+
+
+		if you are the root user you can acctally lock user so they cant login
+
+
+		=> usermod -L <username>
+
+		example:
+
+		=>usermod -L tanvir
+
+
+
+
+		if we locak the user the user cant login and the
+		prompt that the password is incorrent even it is right
+		so the user wont know  what is the real reason
+
+
+
+									unlock the user
+						___________________________________________
+
+			=>usermod -U <username>
+
+			excample:
+
+			=>usermod -U tanvir
+
+				
+
+						changing by editing
+				--------------------------------------
+
+				we can actiually change all of them by editing 
+				this group file by and editor maby vim 
+				editing group file as a special command
+				and to execute this command you have to be root
+
+
+				=>vigr
+
+				now after editing this file exit with :wq
+
+
+				then make the change to take an effect just logout 
+				and relogin
+
+
+
+
+
+
+
+
+
+
+
+							id command of the user
+					______________________________________________
+
+
+				id command will give the groupid,userid
+
+			=>id <user_name>
+			=>id tanvir
+
+
+
+
+						default shell changes
+				______________________________________
+
+
+	you must be root user to do this thing 
+
+
+	many user can  like different different shell
+	like 
+	->bash
+	->sh
+	->ksh
+	->csh
+
+
+	if you want to set the default shell
+
+	command is
+	=>usermod -s <shellpath> <username>
+	=>usermod -s /bin/csh tanvir
+
+
+
+	acctually not only shell you can run any program but if the programm is 
+	finished the user will be logout from the session .so it is a good idea to
+	set a shell because shell is the program that can run other program
+
+
+
+
+
+	you can see which shell is allcated is
+
+	cat /etc/passwd
+
+
+
+
+
